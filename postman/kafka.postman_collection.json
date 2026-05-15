@@ -1,0 +1,208 @@
+{
+  "info": {
+    "_postman_id": "8b3b8ff2-72f2-4c44-b9d7-7e9320f0f58d",
+    "name": "Kafka Order Events API",
+    "description": "Postman collection for Spring Boot Kafka Order Events project. Use with local Spring Boot app running on port 8081 and Kafka running in Docker.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/actuator/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "actuator",
+            "health"
+          ]
+        },
+        "description": "Checks Spring Boot application health using Actuator."
+      },
+      "response": []
+    },
+    {
+      "name": "Publish Order Event",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Asha Sharma\",\n  \"itemName\": \"Mechanical Keyboard\",\n  \"amount\": 2499,\n  \"status\": \"CREATED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ]
+        },
+        "description": "Publishes an order event to Kafka topic orders.v1. Expected status: 202 Accepted."
+      },
+      "response": []
+    },
+    {
+      "name": "Publish Order Event - Status Optional",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Rahul Verma\",\n  \"itemName\": \"Wireless Mouse\",\n  \"amount\": 899\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ]
+        },
+        "description": "Publishes order event without status. Application defaults status to CREATED."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Consumed Order Events",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/events",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders",
+            "events"
+          ]
+        },
+        "description": "Returns order events consumed by this service and stored in memory."
+      },
+      "response": []
+    },
+    {
+      "name": "Validation Error - Blank Customer Name",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"\",\n  \"itemName\": \"Mechanical Keyboard\",\n  \"amount\": 2499,\n  \"status\": \"CREATED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ]
+        },
+        "description": "Negative test case. customerName is blank, so validation should fail."
+      },
+      "response": []
+    },
+    {
+      "name": "Validation Error - Invalid Amount",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Asha Sharma\",\n  \"itemName\": \"Mechanical Keyboard\",\n  \"amount\": 0,\n  \"status\": \"CREATED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "orders"
+          ]
+        },
+        "description": "Negative test case. amount must be minimum 1.00."
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: bitnami/kafka:3.8
+    image: apache/kafka:3.8.1
     container_name: kafka-order-events-broker
     ports:
       - "9092:9092"
