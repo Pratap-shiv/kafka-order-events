@@ -1,0 +1,16 @@
+### Health
+GET http://localhost:8081/actuator/health
+
+### Publish order event
+POST http://localhost:8081/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Asha Sharma",
+  "itemName": "Mechanical Keyboard",
+  "amount": 2499,
+  "status": "CREATED"
+}
+
+### Read events consumed by this service
+GET http://localhost:8081/api/orders/events
